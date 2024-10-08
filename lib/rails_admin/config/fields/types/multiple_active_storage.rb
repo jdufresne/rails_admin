@@ -31,11 +31,9 @@ module RailsAdmin
 
               if thumb && value.representable?
                 representation = value.representation(thumb_method)
-                Rails.application.routes.url_helpers.rails_blob_representation_path(
-                  representation.blob.signed_id, representation.variation.key, representation.blob.filename, only_path: true
-                )
+                representation.processed.url
               else
-                Rails.application.routes.url_helpers.rails_blob_path(value, only_path: true)
+                value.url
               end
             end
           end

@@ -135,6 +135,8 @@ jobs:
           node-version: "18"
       - name: Install ImageMagick
         run: sudo apt-get install imagemagick
+      - name: Install Dependencies
+        run: sudo apt-get install libvips libvips-dev poppler-utils
       - name: Setup application
         env:
           BUNDLE_GEMFILE: ../../${{ matrix.gemfile }}

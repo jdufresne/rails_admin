@@ -16,6 +16,15 @@ if defined?(ActiveStorage)
       )
     end
 
+    around do |example|
+      ActiveStorage::Current.url_options = {host: 'example.com'}
+      begin
+        example.run
+      ensure
+        ActiveStorage::Current.url_options = nil
+      end
+    end
+
     describe RailsAdmin::Config::Fields::Types::MultipleActiveStorage::ActiveStorageAttachment do
       describe '#thumb_method' do
         let(:record) { FactoryBot.create :field_test, active_storage_assets: [{io: StringIO.new('dummy'), filename: 'test.txt', content_type: 'text/plain'}] }

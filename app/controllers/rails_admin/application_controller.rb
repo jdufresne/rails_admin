@@ -13,6 +13,7 @@ module RailsAdmin
   end
 
   class ApplicationController < Config.parent_controller.constantize
+    include ActiveStorage::SetCurrent
     include RailsAdmin::Extensions::ControllerExtension
 
     protect_from_forgery(Config.forgery_protection_settings)

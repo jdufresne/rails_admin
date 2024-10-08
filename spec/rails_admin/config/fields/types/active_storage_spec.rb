@@ -13,6 +13,15 @@ if defined?(ActiveStorage)
       end.with(object: record)
     end
 
+    around do |example|
+      ActiveStorage::Current.url_options = {host: 'example.com'}
+      begin
+        example.run
+      ensure
+        ActiveStorage::Current.url_options = nil
+      end
+    end
+
     describe '#thumb_method' do
       it 'returns corresponding value which is to be passed to image_processing(ActiveStorage >= 6.0) or mini_magick(ActiveStorage 5.2)' do
         expect(field.thumb_method).to eq(resize_to_limit: [100, 100])
