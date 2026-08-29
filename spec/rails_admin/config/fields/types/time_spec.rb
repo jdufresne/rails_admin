@@ -32,6 +32,12 @@ RSpec.describe RailsAdmin::Config::Fields::Types::Time, active_record: true do
       expect(@object.time_field.strftime('%H:%M')).to eq(@time.strftime('%H:%M'))
     end
 
+    it 'reads native time input in the configured timezone' do
+      Time.zone = 'Central Time (US & Canada)'
+      @object.time_field = field.parse_input(time_field: '04:55')
+      expect(@object.time_field.iso8601).to eq('2000-01-01T04:55:00-06:00')
+    end
+
     it 'interprets time value as local time when timezone is specified' do
       Time.zone = 'Eastern Time (US & Canada)' # -05:00
       @object.time_field = field.parse_input(time_field: '2000-01-01T03:45:00')

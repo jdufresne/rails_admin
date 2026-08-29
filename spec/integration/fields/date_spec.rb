@@ -52,15 +52,7 @@ RSpec.describe 'Date field', type: :request do
 
     it 'persists the value' do
       visit new_path(model_name: 'field_test')
-      find('[name="field_test[date_field]"]', visible: false).set('2021-01-02T00:00:00')
-      click_button 'Save'
-      expect(FieldTest.count).to eq 1
-      expect(FieldTest.first.date_field).to eq Date.new(2021, 1, 2)
-    end
-
-    it 'ignores the time part' do
-      visit new_path(model_name: 'field_test')
-      find('[name="field_test[date_field]"]', visible: false).set('2021-01-02T12:34:00')
+      find('[name="field_test[date_field]"]', visible: false).set('2021-01-02')
       click_button 'Save'
       expect(FieldTest.count).to eq 1
       expect(FieldTest.first.date_field).to eq Date.new(2021, 1, 2)
@@ -72,8 +64,8 @@ RSpec.describe 'Date field', type: :request do
 
     it 'updates the value' do
       visit edit_path(model_name: 'field_test', id: field_test.id)
-      expect(find('[name="field_test[date_field]"]', visible: false).value).to eq '2021-01-02T00:00:00'
-      find('[name="field_test[date_field]"]', visible: false).set('2021-02-03T00:00:00')
+      expect(find('[name="field_test[date_field]"]', visible: false).value).to eq '2021-01-02'
+      find('[name="field_test[date_field]"]', visible: false).set('2021-02-03')
       click_button 'Save'
       field_test.reload
       expect(field_test.date_field).to eq Date.new(2021, 2, 3)
@@ -92,7 +84,7 @@ RSpec.describe 'Date field', type: :request do
 
     it 'is not altered by just saving untouched' do
       visit edit_path(model_name: 'field_test', id: field_test.id)
-      expect(find('[name="field_test[date_field]"]', visible: false).value).to eq '2015-10-08T00:00:00'
+      expect(find('[name="field_test[date_field]"]', visible: false).value).to eq '2015-10-08'
       click_button 'Save'
       expect { field_test.reload }.not_to change(field_test, :date_field)
     end

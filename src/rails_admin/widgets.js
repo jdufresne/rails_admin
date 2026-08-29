@@ -1,8 +1,6 @@
 import jQuery from "jquery";
 import "jquery-ui/ui/widgets/sortable.js";
 import * as bootstrap from "bootstrap";
-import flatpickr from "flatpickr";
-import I18n from "./i18n.js";
 
 (function ($) {
   document.addEventListener("rails_admin.dom_ready", function (event) {
@@ -17,19 +15,6 @@ import I18n from "./i18n.js";
       options;
     var content = event.detail || $("form");
     if (content.length) {
-      content.find("[data-datetimepicker]").each(function () {
-        flatpickr(
-          this,
-          $.extend(
-            {
-              dateFormat: "Y-m-dTH:i:S",
-              altInput: true,
-              locale: I18n.locale,
-            },
-            $(this).data("options")
-          )
-        );
-      });
       content.find("[data-enumeration]").each(function () {
         if ($(this).is("[multiple]")) {
           $(this).filteringMultiselect($(this).data("options"));

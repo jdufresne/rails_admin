@@ -17,13 +17,6 @@ module RailsAdmin
             :long
           end
 
-          register_instance_option :datepicker_options do
-            {
-              allowInput: true,
-              altFormat: flatpickr_format,
-            }
-          end
-
           register_instance_option :i18n_scope do
             %i[date formats]
           end
@@ -33,6 +26,10 @@ module RailsAdmin
               required: required?,
               size: 18,
             }
+          end
+
+          def form_value
+            (value || form_default_value)&.to_date&.iso8601
           end
         end
       end

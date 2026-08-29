@@ -53,16 +53,9 @@ RSpec.describe 'Time field', type: :request, active_record: true do
 
     it 'persists the value' do
       visit new_path(model_name: 'field_test')
-      find('[name="field_test[time_field]"]', visible: false).set('2000-01-01T03:45:00')
+      find('[name="field_test[time_field]"]', visible: false).set('03:45')
       click_button 'Save'
       expect(FieldTest.count).to eq 1
-      expect(FieldTest.first.time_field).to eq DateTime.new(2000, 1, 1, 3, 45)
-    end
-
-    it 'ignores the date part' do
-      visit new_path(model_name: 'field_test')
-      find('[name="field_test[time_field]"]', visible: false).set('2021-01-02T03:45:00')
-      click_button 'Save'
       expect(FieldTest.first.time_field).to eq DateTime.new(2000, 1, 1, 3, 45)
     end
   end
@@ -72,8 +65,8 @@ RSpec.describe 'Time field', type: :request, active_record: true do
 
     it 'updates the value' do
       visit edit_path(model_name: 'field_test', id: field_test.id)
-      expect(find('[name="field_test[time_field]"]', visible: false).value).to eq '2000-01-01T03:45:00'
-      find('[name="field_test[time_field]"]', visible: false).set('2021-02-03T04:55:00')
+      expect(find('[name="field_test[time_field]"]', visible: false).value).to eq '03:45'
+      find('[name="field_test[time_field]"]', visible: false).set('04:55')
       click_button 'Save'
       field_test.reload
       expect(field_test.time_field).to eq DateTime.new(2000, 1, 1, 4, 55)
@@ -92,7 +85,7 @@ RSpec.describe 'Time field', type: :request, active_record: true do
 
     it 'treats the datetime set by the browser as local time' do
       visit edit_path(model_name: 'field_test', id: field_test.id)
-      find('[name="field_test[time_field]"]', visible: false).set('2000-01-01T04:55:00')
+      find('[name="field_test[time_field]"]', visible: false).set('04:55')
       click_button 'Save'
       field_test.reload
       expect(field_test.time_field.iso8601).to eq '2000-01-01T04:55:00-06:00'
@@ -100,7 +93,7 @@ RSpec.describe 'Time field', type: :request, active_record: true do
 
     it 'is not altered by just saving untouched' do
       visit edit_path(model_name: 'field_test', id: field_test.id)
-      expect(find('[name="field_test[time_field]"]', visible: false).value).to eq '2000-01-01T00:45:00'
+      expect(find('[name="field_test[time_field]"]', visible: false).value).to eq '00:45'
       click_button 'Save'
       expect { field_test.reload }.not_to change(field_test, :time_field)
     end

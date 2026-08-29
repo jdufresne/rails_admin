@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_admin/support/datetime'
-
 module RailsAdmin
   class AbstractModel
     cattr_accessor :all

@@ -123,15 +123,14 @@ RSpec.describe 'Filter box widget', type: :request, js: true do
       end
     end
 
-    it 'populates the value selected by the Datetimepicker into the hidden_field' do
+    it 'uses a native date input' do
       visit index_path(model_name: 'field_test')
       click_link 'Add filter'
       click_link 'Date field'
-      expect(find('[name^="f[date_field]"][name$="[v][]"]', match: :first, visible: false).value).to be_blank
-      page.execute_script <<-JS
-        document.querySelector('.form-control.date')._flatpickr.setDate('2015-10-08');
-      JS
-      expect(find('[name^="f[date_field]"][name$="[v][]"]', match: :first, visible: false).value).to eq '2015-10-08T00:00:00'
+      date_input = find('[name^="f[date_field]"][name$="[v][]"]', match: :first)
+      expect(date_input[:type]).to eq 'date'
+      date_input.set '2015-10-08'
+      expect(date_input.value).to eq '2015-10-08'
     end
   end
 
@@ -142,15 +141,14 @@ RSpec.describe 'Filter box widget', type: :request, js: true do
       end
     end
 
-    it 'populates the value selected by the Datetimepicker into the hidden_field' do
+    it 'uses a native datetime-local input' do
       visit index_path(model_name: 'field_test')
       click_link 'Add filter'
       click_link 'Datetime field'
-      expect(find('[name^="f[datetime_field]"][name$="[v][]"]', match: :first, visible: false).value).to be_blank
-      page.execute_script <<-JS
-        document.querySelector('.form-control.datetime')._flatpickr.setDate('2015-10-08 14:00:00');
-      JS
-      expect(find('[name^="f[datetime_field]"][name$="[v][]"]', match: :first, visible: false).value).to eq '2015-10-08T14:00:00'
+      datetime_input = find('[name^="f[datetime_field]"][name$="[v][]"]', match: :first)
+      expect(datetime_input[:type]).to eq 'datetime-local'
+      datetime_input.set '2015-10-08T14:00'
+      expect(datetime_input.value).to eq '2015-10-08T14:00'
     end
   end
 
@@ -188,15 +186,14 @@ RSpec.describe 'Filter box widget', type: :request, js: true do
       end
     end
 
-    it 'populates the value selected by the Datetimepicker into the hidden_field' do
+    it 'uses a native time input' do
       visit index_path(model_name: 'field_test')
       click_link 'Add filter'
       click_link 'Time field'
-      expect(find('[name^="f[time_field]"][name$="[v][]"]', match: :first, visible: false).value).to be_blank
-      page.execute_script <<-JS
-        document.querySelector('.form-control.datetime')._flatpickr.setDate('2000-01-01 14:00:00');
-      JS
-      expect(find('[name^="f[time_field]"][name$="[v][]"]', match: :first, visible: false).value).to eq '2000-01-01T14:00:00'
+      time_input = find('[name^="f[time_field]"][name$="[v][]"]', match: :first)
+      expect(time_input[:type]).to eq 'time'
+      page.execute_script("document.querySelector('[name^=\"f[time_field]\"][name$=\"[v][]\"]').value = '14:00'")
+      expect(time_input.value).to eq '14:00'
     end
   end
 

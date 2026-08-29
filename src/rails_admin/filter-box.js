@@ -1,9 +1,26 @@
 import jQuery from "jquery";
 import I18n from "./i18n.js";
-import flatpickr from "flatpickr";
 
 (function ($) {
   var filters;
+  var normalizeTemporalValue = function (value, fieldType) {
+    if (!value) {
+      return "";
+    }
+
+    if (fieldType === "date") {
+      return value.split("T")[0];
+    }
+
+    if (fieldType === "time") {
+      if (value.includes("T")) {
+        return value.split("T")[1].slice(0, 5);
+      }
+      return value.slice(0, 5);
+    }
+
+    return value;
+  };
 
   $.filters = filters = {
     append: function (options) {
@@ -55,6 +72,12 @@ import flatpickr from "flatpickr";
         case "datetime":
         case "timestamp":
         case "time":
+          var temporalInputType =
+            field_type == "date"
+              ? "date"
+              : field_type == "time"
+              ? "time"
+              : "datetime-local";
           additional_control = $.map(
             [undefined, "-∞", "∞"],
             function (placeholder, index) {
@@ -66,12 +89,23 @@ import flatpickr from "flatpickr";
                 .addClass(index == 0 ? "default" : "between")
                 .css("display", visible ? "inline-block" : "none")
                 .html(
-                  $(
-                    '<input class="input-sm form-control form-control-sm" type="text" />'
-                  )
-                    .addClass(field_type == "date" ? "date" : "datetime")
+                  $('<input class="input-sm form-control form-control-sm" />')
+                    .addClass(
+                      field_type == "date"
+                        ? "date"
+                        : field_type == "time"
+                        ? "time"
+                        : "datetime"
+                    )
+                    .prop("type", temporalInputType)
                     .prop("name", value_name + "[]")
-                    .prop("value", field_value[index] || "")
+                    .prop(
+                      "value",
+                      normalizeTemporalValue(
+                        field_value[index] || "",
+                        field_type
+                      )
+                    )
                     .prop(
                       "size",
                       field_type == "date" || field_type == "time" ? 20 : 25
@@ -190,20 +224,6 @@ import flatpickr from "flatpickr";
         .append(additional_control);
 
       $("#filters_box").append($content);
-
-      $content.find(".date, .datetime").each(function () {
-        flatpickr(
-          this,
-          $.extend(
-            {
-              dateFormat: "Y-m-dTH:i:S",
-              altInput: true,
-              locale: I18n.locale,
-            },
-            options["datetimepicker_options"]
-          )
-        );
-      });
 
       $("hr.filters_box:hidden").show("slow");
     },

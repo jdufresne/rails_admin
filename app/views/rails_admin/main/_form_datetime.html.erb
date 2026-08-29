@@ -1,10 +1,11 @@
 <div class="row">
   <div class="col-sm-4">
-    <div class="input-group">
-      <%= form.text_field field.method_name, field.html_attributes.reverse_merge({autocomplete: 'off', class: 'form-control', data: {datetimepicker: true, options: field.datepicker_options.to_json}, value: field.form_value}) %>
-      <%= form.label(field.method_name, class: 'input-group-text') do %>
-        <i class="fa fa-fw fa-calendar"></i>
-      <% end %>
-    </div>
+    <% if field.type.in?([:datetime, :timestamp]) %>
+      <%= form.datetime_local_field field.method_name, field.html_attributes.reverse_merge({autocomplete: 'off', class: 'form-control', value: field.form_value}) %>
+    <% elsif field.type == :date %>
+      <%= form.date_field field.method_name, field.html_attributes.reverse_merge({autocomplete: 'off', class: 'form-control', value: field.form_value}) %>
+    <% elsif field.type == :time %>
+      <%= form.time_field field.method_name, field.html_attributes.reverse_merge({autocomplete: 'off', class: 'form-control', value: field.form_value}) %>
+    <% end %>
   </div>
 </div>

@@ -12,8 +12,6 @@ pin '@rails/actiontext', to: 'https://ga.jspm.io/npm:@rails/actiontext@7.0.3-1/a
 pin '@rails/activestorage', to: 'https://ga.jspm.io/npm:@rails/activestorage@7.0.3-1/app/assets/javascripts/activestorage.esm.js'
 pin '@rails/ujs', to: 'https://ga.jspm.io/npm:@rails/ujs@7.0.3-1/lib/assets/compiled/rails-ujs.js'
 pin 'bootstrap', to: 'https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js'
-pin 'flatpickr', to: 'https://ga.jspm.io/npm:flatpickr@4.6.13/dist/flatpickr.js'
-pin 'flatpickr/', to: 'https://ga.jspm.io/npm:flatpickr@4.6.13/'
 pin 'jquery', to: 'https://ga.jspm.io/npm:jquery@3.6.0/dist/jquery.js'
 pin 'jquery-ui/', to: 'https://ga.jspm.io/npm:jquery-ui@1.13.1/'
 pin 'trix', to: 'https://ga.jspm.io/npm:trix@2.0.0-beta.0/dist/trix.js'
